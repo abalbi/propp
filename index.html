@@ -2,19 +2,9 @@
   <head>
     <script src="lib/angular.js"></script>
     <script src="js/app.js"></script>
-    <style type="text/css">
-      [contenteditable] {
-        border: 1px solid black;
-        background-color: white;
-        min-height: 20px;
-      }
-      .ng-invalid {
-        border: 1px solid red;
-      }
-      </style>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
   </head>
   <body ng-controller="hechoCtrl">
-   <div contenteditable="true" ng-model="hecho.descripcion" strip-br="true" required></div>
-    <div>{{hecho.descripcion}}</div>
+    <div contenteditable="true" ng-model="hecho.descripcion" required></div>
   </body>
 </html>
