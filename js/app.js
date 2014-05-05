@@ -70,6 +70,15 @@ app.controller('hechoCtrl', function($scope) {
     }
   }
   $scope.etiqueta = {
+    traer: function(eti) {
+      if(!$scope.etiquetas[eti]) {
+        $scope.etiquetas[eti] = {
+          items: []
+        }
+      }
+      $scope.etiqueta.visible = false;
+      return $scope.etiquetas[eti];
+    },
     agregar: function(eti, ele) {
       $scope.etiqueta.item = eti;
       if(!$scope.etiqueta.modal) {
@@ -77,14 +86,10 @@ app.controller('hechoCtrl', function($scope) {
       }
       if($scope.etiqueta.modal && $scope.etiqueta.item && ele) {
         elemento = $scope.elementos[ele.toLowerCase().trim()];
-        if(!$scope.etiquetas[eti]) {
-          $scope.etiquetas[eti] = {
-            items: []
-          }
-        }
+        etiqueta = $scope.etiqueta.traer(eti);
         if(elemento.etiquetas.indexOf(eti) == -1) {
           elemento.etiquetas.push(eti);
-          $scope.etiquetas[eti].items.push(elemento);
+          etiqueta.items.push(elemento);
         }
         $scope.etiqueta.modal = false;
         $scope.etiqueta.item = '';

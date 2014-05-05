@@ -19,6 +19,10 @@
         <span class="etiqueta" ng-repeat="etiqueta in elemento.etiquetas">{{etiqueta}}</span>
       </div>
       <br>
+      <div ng-click="etiqueta.visible = true">Agregar Etiqueta</div>
+      <div ng-show="etiqueta.visible">
+        <input ng-model="etiqueta.item" ng-blur="etiqueta.traer(etiqueta.item)">
+      </div>
       <span class="etiqueta" ng-repeat="(key, etiqueta) in etiquetas">{{key}}</span>
     </div>
     <div ng-show="etiqueta.modal">
