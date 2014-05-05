@@ -1,7 +1,32 @@
 /*
 Paleta generada en http://www.cssdrive.com/imagepalette/index.php 
-usando la imagen http://31.media.tumblr.com/tumblr_m8iqhv2FOn1rahwlco1_1280.jpg
+usando la imagen http://img4.wikia.nocookie.net/__cb20050529171058/whitewolf/images/d/d6/Logo_Changeling_Dreaming.gif
 */
+
+.color1 { color: #6699cc}
+.color2 { color: #66ccff}
+.color3 { color: #000000}
+.color4 { color: #ffffff}
+.color5 { color: #ffcc66}
+.color6 { color: #cc3333}
+.color7 { color: #ff9933}
+.color8 { color: #333300}
+.color9 { color: #cc3300}
+.color10 { color: #663300}
+.color11 { color: #ffcc00}
+.color12 { color: #ffcc33}
+.color13 { color: #cc6600}
+.color14 { color: #996633}
+.color15 { color: #333333}
+.color16 { color: #ff9900}
+.color17 { color: #666600}
+.color18 { color: #cccccc}
+.color19 { color: #ccffcc}
+.color20 { color: #cc9966}
+.color21 { color: #0000ff}
+.color22 { color: #006699}
+.color23 { color: #99cccc}
+.color24 { color: #000066}
 
 [contenteditable] {
   border: 1px solid black;
@@ -11,9 +36,9 @@ usando la imagen http://31.media.tumblr.com/tumblr_m8iqhv2FOn1rahwlco1_1280.jpg
 .ng-invalid {
   border: 1px solid red;
 }
-.etiqueta {
+.elemento {
   padding:0 1px 0 3px;
-  background:#495c46;
+  background:#6699cc;
   color:#fff;
   text-decoration:none;
   -moz-border-radius-bottomright:4px;
@@ -28,5 +53,35 @@ usando la imagen http://31.media.tumblr.com/tumblr_m8iqhv2FOn1rahwlco1_1280.jpg
   -moz-border-radius-topleft:4px;
   -webkit-border-top-left-radius:4px;  
   border-top-left-radius:4px;  
+}
+
+.etiqueta {
+  padding:0 1px 0 3px;
+  background:#cc3333;
+  color:#fff;
+  text-decoration:none;
+  -moz-border-radius-bottomright:4px;
+  -webkit-border-bottom-right-radius:4px; 
+  border-bottom-right-radius:4px;
+  -moz-border-radius-topright:4px;
+  -webkit-border-top-right-radius:4px;  
+  border-top-right-radius:4px;  
+  -moz-border-radius-bottomleft:4px;
+  -webkit-border-bottom-left-radius:4px; 
+  border-bottom-left-left:4px;
+  -moz-border-radius-topleft:4px;
+  -webkit-border-top-left-radius:4px;  
+  border-top-left-radius:4px;  
+}
+
+
+#medio {
+float: left;
+width: 70%;
+}
+
+#costado {
+float: right;
+width: 30%;
 }
 
