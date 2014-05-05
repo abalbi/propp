@@ -37,7 +37,7 @@ usando la imagen http://img4.wikia.nocookie.net/__cb20050529171058/whitewolf/ima
   border: 1px solid red;
 }
 .elemento {
-  padding:0 1px 0 3px;
+  padding:1px 1px 1px 3px;
   background:#6699cc;
   color:#fff;
   text-decoration:none;

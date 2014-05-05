@@ -11,33 +11,24 @@ app.directive('contenteditable', function ($document,$window) {
         element.html(ngModel.$viewValue || '');
       };
 
-
       element.on('blur change', function () {
         scope.$apply(readViewText());
       });
 
-      element.on('dblclick', function () {
-        var sel = window.getSelection();
-//        console.log(sel)
-//        console.log(sel.getRangeAt(0))
-      });
-      element.on('keydown', function () {
-        var sel = window.getSelection();
-
-
-//        console.log(sel)
-//        console.log(sel.getRangeAt(0))
+      element.on('click', function (ev) {
+        seleccion = $(ev.toElement).text();
+        sel = window.getSelection();
+        seleccion = sel.toString().trim();
+        if(seleccion) {
+          scope.etiqueta.agregar(seleccion)
+        }
+        scope.$apply(readViewText());
       });
 
-
-    // No need to initialize, AngularJS will initialize the text based on ng-model attribute
-
-    // Write data to the model
       function readViewText(evento) {
         var html;
         var start = scope.descripcion.palabras.length;
         var ultimo;
-        console.log(element);
         sel = window.getSelection();
         html = scope.descripcion.render(element.text(),$window);
         if(evento) {
@@ -54,32 +45,6 @@ app.directive('contenteditable', function ($document,$window) {
   };
 });
   
-function getCaretPosition(editableDiv) {
-    var caretPos = 0, containerEl = null, sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            console.log(range)
-            //if (range.commonAncestorContainer.parentNode == editableDiv) {
-                caretPos = range.endOffset;
-            //}
-        }
-    } else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange();
-        if (range.parentElement() == editableDiv) {
-            var tempEl = document.createElement("span");
-            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-            var tempRange = range.duplicate();
-            tempRange.moveToElementText(tempEl);
-            tempRange.setEndPoint("EndToEnd", range);
-            caretPos = tempRange.text.length;
-        }
-    }
-    return caretPos;
-}
-
-
 app.controller('hechoCtrl', function($scope) {
   $scope.hecho = {descripcion: 'Lorem de Ipsum Ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per.'};
   $scope.elementos = {
@@ -96,13 +61,41 @@ app.controller('hechoCtrl', function($scope) {
     item: {},
     visible: false,
     agregar: function() {
-      $scope.elementos[$scope.elemento.item.nombre.toLowerCase().trim()] = {nombre: $scope.elemento.item.nombre.trim()}
+      $scope.elementos[$scope.elemento.item.nombre.toLowerCase().trim()] = {
+        nombre: $scope.elemento.item.nombre.trim(),
+        etiquetas: []
+      }
       $scope.elemento.visible = false;
       $scope.elemento.item = {};
     }
   }
+  $scope.etiqueta = {
+    agregar: function(eti, ele) {
+      $scope.etiqueta.item = eti;
+      if(!$scope.etiqueta.modal) {
+        $scope.etiqueta.modal = true;
+      }
+      if($scope.etiqueta.modal && $scope.etiqueta.item && ele) {
+        elemento = $scope.elementos[ele.toLowerCase().trim()];
+        if(!$scope.etiquetas[eti]) {
+          $scope.etiquetas[eti] = {
+            items: []
+          }
+        }
+        if(elemento.etiquetas.indexOf(eti) == -1) {
+          elemento.etiquetas.push(eti);
+          $scope.etiquetas[eti].items.push(elemento);
+        }
+        $scope.etiqueta.modal = false;
+        $scope.etiqueta.item = '';
+      }
+    }
+  }
   $scope.descripcion = {
     palabras: [],
+    seleccion: {
+      item: false
+    },
     render: function(text, $window) {
       html = '';
       $scope.descripcion.palabras = [];
@@ -121,7 +114,7 @@ app.controller('hechoCtrl', function($scope) {
           match = '<span id="' + obj.id + '" class="elemento">' + match +'</span>'
           $scope.descripcion.palabras.push(obj)
         } else {
-          //match = '<span>' + match +'</span>'
+          match = '<span ng-click="click_palabra()">' + match +'</span>'
         }
         html = html + match;
       });

@@ -14,11 +14,19 @@
       <div ng-show="elemento.visible">
         <input ng-model="elemento.item.nombre" ng-blur="elemento.agregar()">
       </div>
-      <div ng-repeat="elemento in elementos">
+      <div class="elemento" ng-repeat="elemento in elementos">
         {{elemento.nombre}}
         <span class="etiqueta" ng-repeat="etiqueta in elemento.etiquetas">{{etiqueta}}</span>
       </div>
+      <br>
       <span class="etiqueta" ng-repeat="(key, etiqueta) in etiquetas">{{key}}</span>
+    </div>
+    <div ng-show="etiqueta.modal">
+      <span class="etiqueta">{{etiqueta.item}}</span>
+      agregar a Elemento:
+      <ul ng-repeat="elemento in elementos">
+        <li class="elemento" ng-click="etiqueta.agregar(etiqueta.item,elemento.nombre)">{{elemento.nombre}}</li>
+      </ul>
     </div>
   </body>
 </html>
