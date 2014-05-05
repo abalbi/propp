@@ -14,9 +14,9 @@
       <div ng-show="elemento.visible">
         <input ng-model="elemento.item.nombre" ng-blur="elemento.agregar()">
       </div>
-      <div class="elemento" ng-repeat="elemento in elementos">
-        {{elemento.nombre}}
-        <span class="etiqueta" ng-repeat="etiqueta in elemento.etiquetas">{{etiqueta}}</span>
+      <div class="elemento" ng-repeat="ele in elementos" ng-click="elemento.modificar(ele)">
+        {{ele.nombre}}
+        <span class="etiqueta" ng-repeat="etiqueta in ele.etiquetas">{{etiqueta}}</span>
       </div>
       <hr>
       <div ng-click="etiqueta.modificar()">Agregar Etiqueta</div>
@@ -24,7 +24,6 @@
       </div>
       <span ng-repeat="key in etiquetas" class="etiqueta" ng-click="etiqueta.modificar(key)">{{key}}</span>
     </div>
-
     <div ng-show="etiqueta.modal" class="modal">
       <input ng-model="etiqueta.item" ng-blur="etiqueta.traer(etiqueta.item)">
       agregar a Elementos:
@@ -32,6 +31,13 @@
         <li class="elemento" ng-class="{seleccionado: elemento.tieneEtiqueta(ele,etiqueta.item)}" ng-click="elemento.agregarEtiqueta(ele,etiqueta.item)">{{ele.nombre}}</li>
       </ul>
       <span ng-click="etiqueta.modal = false">cerrar</span>
+    </div>
+    <div ng-show="elemento.modal" class="modal">
+      <h2>{{elemento.item.nombre}}</h2>
+      <ul ng-repeat="eti in etiquetas">
+        <li class="etiqueta" ng-class="{seleccionado: elemento.tieneEtiqueta(elemento.item,eti)}" ng-click="elemento.agregarEtiqueta(elemento.item,eti)">{{eti}}</li>
+      </ul>
+      <span ng-click="elemento.modal = false">cerrar</span>
     </div>
   </body>
 </html>

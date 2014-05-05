@@ -21,6 +21,12 @@ app.controller('hechoCtrl', function($scope) {
     },
     tieneEtiqueta: function(elemento, eti) {
       return elemento.etiquetas.indexOf(eti) != -1
+    },
+    modificar: function(ele) {
+      $scope.elemento.item = ele
+      if(!$scope.elemento.modal) {
+        $scope.elemento.modal = true;
+      }
     }
   }
   $scope.etiqueta = {
@@ -68,7 +74,7 @@ app.controller('hechoCtrl', function($scope) {
       return html;
     }
   }
-  $scope.hecho = {descripcion: 'Lorem de Ipsum Ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per.'};
+  $scope.hecho = {descripcion: 'Ivana la principe toreador. Lorem de Ipsum Ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per.'};
   $scope.elementos = {
     ivana: {nombre: 'Ivana',etiquetas: ['toreador']},
     silas: {nombre: 'Silas',etiquetas: ['ventrue']}
