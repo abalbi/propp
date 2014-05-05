@@ -1,5 +1,86 @@
 var app = angular.module('proppApp', []);
 
+app.controller('hechoCtrl', function($scope) {
+  $scope.elemento = {
+    item: {},
+    visible: false,
+    agregar: function() {
+      $scope.elementos[$scope.elemento.item.nombre.toLowerCase().trim()] = {
+        nombre: $scope.elemento.item.nombre.trim(),
+        etiquetas: []
+      }
+      $scope.elemento.visible = false;
+      $scope.elemento.item = {};
+    },
+    agregarEtiqueta: function(elemento, eti) {
+      if(!$scope.elemento.tieneEtiqueta(elemento,eti)) {
+        elemento.etiquetas.push($scope.etiqueta.traer(eti));
+      } else {
+        elemento.etiquetas.splice(elemento.etiquetas.indexOf(eti),1);
+      }
+    },
+    tieneEtiqueta: function(elemento, eti) {
+      return elemento.etiquetas.indexOf(eti) != -1
+    }
+  }
+  $scope.etiqueta = {
+    traer: function(eti) {
+      if($scope.etiquetas.indexOf(eti) == -1 ) {
+        $scope.etiquetas.push(eti);
+      }
+      return eti;
+    },
+    modificar: function(eti) {
+      $scope.etiqueta.item = eti
+      if(!$scope.etiqueta.modal) {
+        $scope.etiqueta.modal = true;
+      }
+    }
+  }
+  $scope.descripcion = {
+    palabras: [],
+    seleccion: {
+      item: false
+    },
+    render: function(text, $window) {
+      html = '';
+      $scope.descripcion.palabras = [];
+      text = text.trim();
+      text = text.replace(/\&nbsp\;/gi," ");
+      text = text.replace(/(\w+)|(.)/mg, function(match){
+        var obj = {}
+        obj.texto = match;
+        obj.id = 'palabra-' + $scope.descripcion.palabras.length
+        if($scope.etiquetas.indexOf(match.toLowerCase().trim()) != -1) {
+          obj.etiqueta = true;
+          match = '<span id="' + obj.id + '" class="etiqueta">' + match +'</span>'
+          $scope.descripcion.palabras.push(obj)
+        } else if($scope.elementos[match.toLowerCase().trim()]) {
+          obj.elemento = true;
+          match = '<span id="' + obj.id + '" class="elemento">' + match +'</span>'
+          $scope.descripcion.palabras.push(obj)
+        } else {
+          match = '<span ng-click="click_palabra()">' + match +'</span>'
+        }
+        html = html + match;
+      });
+      html = html + '<span> </span>'
+      return html;
+    }
+  }
+  $scope.hecho = {descripcion: 'Lorem de Ipsum Ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per.'};
+  $scope.elementos = {
+    ivana: {nombre: 'Ivana',etiquetas: ['toreador']},
+    silas: {nombre: 'Silas',etiquetas: ['ventrue']}
+  }
+  $scope.etiquetas = [];
+  angular.forEach($scope.elementos, function(ele){
+    angular.forEach(ele.etiquetas, function(eti){
+      $scope.etiqueta.traer(eti);
+    })
+  })
+  $scope.hecho.descripcion = $scope.descripcion.render($scope.hecho.descripcion);
+});
 app.directive('contenteditable', function ($document,$window) {
   return {
     restrict: 'A', // only activate on element attribute
@@ -20,7 +101,7 @@ app.directive('contenteditable', function ($document,$window) {
         sel = window.getSelection();
         seleccion = sel.toString().trim();
         if(seleccion) {
-          scope.etiqueta.agregar(seleccion)
+          scope.etiqueta.modificar(seleccion)
         }
         scope.$apply(readViewText());
       });
@@ -43,89 +124,4 @@ app.directive('contenteditable', function ($document,$window) {
       }
     }
   };
-});
-  
-app.controller('hechoCtrl', function($scope) {
-  $scope.hecho = {descripcion: 'Lorem de Ipsum Ad his scripta blandit partiendo, eum fastidii accumsan euripidis in, eum liber hendrerit an. Qui ut wisi vocibus suscipiantur, quo dicit ridens inciderint id. Quo mundi lobortis reformidans eu, legimus senserit definiebas an eos. Eu sit tincidunt incorrupte definitionem, vis mutat affert percipit cu, eirmod consectetuer signiferumque eu per. In usu latine equidem dolores. Quo no falli viris intellegam, ut fugit veritus placerat per.'};
-  $scope.elementos = {
-    ivana: {nombre: 'Ivana',etiquetas: []}
-  }
-  $scope.etiquetas = {
-    toreador: {
-      items: []
-    }
-  }
-  $scope.elementos.ivana.etiquetas.push('toreador');
-  $scope.etiquetas.toreador.items.push($scope.elementos.ivana);
-  $scope.elemento = {
-    item: {},
-    visible: false,
-    agregar: function() {
-      $scope.elementos[$scope.elemento.item.nombre.toLowerCase().trim()] = {
-        nombre: $scope.elemento.item.nombre.trim(),
-        etiquetas: []
-      }
-      $scope.elemento.visible = false;
-      $scope.elemento.item = {};
-    }
-  }
-  $scope.etiqueta = {
-    traer: function(eti) {
-      if(!$scope.etiquetas[eti]) {
-        $scope.etiquetas[eti] = {
-          items: []
-        }
-      }
-      $scope.etiqueta.visible = false;
-      return $scope.etiquetas[eti];
-    },
-    agregar: function(eti, ele) {
-      $scope.etiqueta.item = eti;
-      if(!$scope.etiqueta.modal) {
-        $scope.etiqueta.modal = true;
-      }
-      if($scope.etiqueta.modal && $scope.etiqueta.item && ele) {
-        elemento = $scope.elementos[ele.toLowerCase().trim()];
-        etiqueta = $scope.etiqueta.traer(eti);
-        if(elemento.etiquetas.indexOf(eti) == -1) {
-          elemento.etiquetas.push(eti);
-          etiqueta.items.push(elemento);
-        }
-        $scope.etiqueta.modal = false;
-        $scope.etiqueta.item = '';
-      }
-    }
-  }
-  $scope.descripcion = {
-    palabras: [],
-    seleccion: {
-      item: false
-    },
-    render: function(text, $window) {
-      html = '';
-      $scope.descripcion.palabras = [];
-      text = text.trim();
-      text = text.replace(/\&nbsp\;/gi," ");
-      text = text.replace(/(\w+)|(.)/mg, function(match){
-        var obj = {}
-        obj.texto = match;
-        obj.id = 'palabra-' + $scope.descripcion.palabras.length
-        if($scope.etiquetas[match.toLowerCase().trim()]) {
-          obj.etiqueta = true;
-          match = '<span id="' + obj.id + '" class="etiqueta">' + match +'</span>'
-          $scope.descripcion.palabras.push(obj)
-        } else if($scope.elementos[match.toLowerCase().trim()]) {
-          obj.elemento = true;
-          match = '<span id="' + obj.id + '" class="elemento">' + match +'</span>'
-          $scope.descripcion.palabras.push(obj)
-        } else {
-          match = '<span ng-click="click_palabra()">' + match +'</span>'
-        }
-        html = html + match;
-      });
-      html = html + '<span> </span>'
-      return html;
-    }
-  }
-  $scope.hecho.descripcion = $scope.descripcion.render($scope.hecho.descripcion);
 });

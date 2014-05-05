@@ -10,7 +10,7 @@
       <div id="texto" contenteditable="true" ng-model="hecho.descripcion" required></div>
     </div>
     <div id="costado">
-      <div ng-click="elemento.visible = true">Agregar Elemento</div>
+      <div ng-click="elemento.visible = !elemento.visible">Agregar Elemento</div>
       <div ng-show="elemento.visible">
         <input ng-model="elemento.item.nombre" ng-blur="elemento.agregar()">
       </div>
@@ -18,19 +18,20 @@
         {{elemento.nombre}}
         <span class="etiqueta" ng-repeat="etiqueta in elemento.etiquetas">{{etiqueta}}</span>
       </div>
-      <br>
-      <div ng-click="etiqueta.visible = true">Agregar Etiqueta</div>
+      <hr>
+      <div ng-click="etiqueta.modificar()">Agregar Etiqueta</div>
       <div ng-show="etiqueta.visible">
-        <input ng-model="etiqueta.item" ng-blur="etiqueta.traer(etiqueta.item)">
       </div>
-      <span class="etiqueta" ng-repeat="(key, etiqueta) in etiquetas">{{key}}</span>
+      <span ng-repeat="key in etiquetas" class="etiqueta" ng-click="etiqueta.modificar(key)">{{key}}</span>
     </div>
-    <div ng-show="etiqueta.modal">
-      <span class="etiqueta">{{etiqueta.item}}</span>
-      agregar a Elemento:
-      <ul ng-repeat="elemento in elementos">
-        <li class="elemento" ng-click="etiqueta.agregar(etiqueta.item,elemento.nombre)">{{elemento.nombre}}</li>
+
+    <div ng-show="etiqueta.modal" class="modal">
+      <input ng-model="etiqueta.item" ng-blur="etiqueta.traer(etiqueta.item)">
+      agregar a Elementos:
+      <ul ng-repeat="ele in elementos">
+        <li class="elemento" ng-class="{seleccionado: elemento.tieneEtiqueta(ele,etiqueta.item)}" ng-click="elemento.agregarEtiqueta(ele,etiqueta.item)">{{ele.nombre}}</li>
       </ul>
+      <span ng-click="etiqueta.modal = false">cerrar</span>
     </div>
   </body>
 </html>
